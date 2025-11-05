@@ -11,6 +11,8 @@ export class PasteImageHandler {
   constructor(private readonly app: App, private readonly getSettings: () => ImagePasteSettings) {}
 
   async handlePaste(): Promise<void> {
+    console.log("ImagePaste: handlePaste called");
+
     if (this.processing) {
       new Notice("画像を処理中です。少し待ってから再度お試しください。");
       return;
@@ -18,9 +20,12 @@ export class PasteImageHandler {
 
     const editor = this.getEditor();
     if (!editor) {
+      console.log("ImagePaste: No active editor found");
       new Notice("アクティブなエディタが見つかりません。ノートを開いてから実行してください。");
       return;
     }
+
+    console.log("ImagePaste: Active editor found");
 
     const file = this.app.workspace.getActiveFile();
     const settings = this.getSettings();
@@ -32,11 +37,15 @@ export class PasteImageHandler {
 
     this.processing = true;
     try {
+      console.log("ImagePaste: Reading clipboard...");
       const clipboardImage = await this.readClipboard(settings.supportedFormats);
       if (!clipboardImage) {
+        console.log("ImagePaste: No image found in clipboard");
         new Notice("クリップボードに画像が見つかりません。");
         return;
       }
+
+      console.log("ImagePaste: Image found in clipboard, format:", clipboardImage.format);
 
       const normalizedFormat = normalizeFormat(clipboardImage.format);
       if (!isFormatAllowed(normalizedFormat, settings.supportedFormats)) {

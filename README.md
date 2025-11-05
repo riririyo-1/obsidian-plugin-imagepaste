@@ -1,164 +1,71 @@
-# Image Paste Plugin for Obsidian
+# Obsidian Image Paste Plugin
 
-Cmd + Alt + V でクリップボード画像を簡単に保存・挿入する Obsidian プラグインです。
+クリップボードの画像を `Cmd+Option+V` (Mac) / `Ctrl+Alt+V` (Win) で即座に保存・挿入するObsidianプラグインです。
 
 ## 機能
 
-- **ショートカット**: Cmd + Alt + V でクリップボードの画像を瞬時に挿入
-- **柔軟な保存先設定**: 画像の保存フォルダを自由に指定
-- **カスタム命名**: ファイル名のプレフィックスとルールを設定可能
-- **挿入パターン設定**: Markdown/HTML テンプレートで挿入形式をカスタマイズ
-- **複数形式対応**: PNG、JPG、GIF などの画像形式をサポート
+- クリップボードから画像を取得して自動保存
+- カスタマイズ可能なファイル名パターン
+- カスタマイズ可能な保存先フォルダ
+- カスタマイズ可能な挿入HTML/Markdown
 
-## インストール方法
+## 使い方
 
-### 手動インストール
+1. 画像をクリップボードにコピー
+2. Obsidianのエディタで `Cmd+Option+V` (Mac) / `Ctrl+Alt+V` (Win) を押す
+3. 画像が保存され、エディタに挿入される
 
-1. **このリポジトリをクローンまたはダウンロード**:
+## 設定
 
-   ```bash
-   git clone https://github.com/riririyo-1/obsidian-plugin-imagepaste.git
-   ```
+プラグイン設定画面から以下の項目をカスタマイズできます:
 
-2. **必要なファイルを特定**:
-   プラグインに必要なファイルは以下の 3 つです：
+### 画像保存フォルダ
+- デフォルト: `${currentFileDir}/images`
+- 変数: `${currentFileDir}` - 現在のファイルのディレクトリ
 
-   - `main.js` - プラグインのメインコード
-   - `manifest.json` - プラグインの設定情報
-   - `styles.css` - スタイルシート
+### ファイル名接頭辞
+- デフォルト: `${currentFileNameWithoutExt}_`
+- 変数: `${currentFileNameWithoutExt}` - 現在のファイル名（拡張子なし）
 
-3. **📁 重要：プラグインフォルダを作成**:
+### ファイル名本体
+- デフォルト: `image-YYMMDD-HHmmss`
+- `YYMMDD-HHmmss` が日時に置換されます
+- 例: `image-241105-143020`
 
-   **あなたの Obsidian Vault**の `.obsidian/plugins/` ディレクトリ内に **`obsidian-plugin-imagepaste`** フォルダを作成します：
+### 挿入パターン
+- デフォルト: `<img src='./images/${imageFileName}' alt='image' style='width: 600px; border: 1px solid black;'>`
+- 変数: `${imageFileName}` - 保存された画像のファイル名
 
-   ```text
-   あなたのVault/                           ← ここはあなたのVaultのルートフォルダ
-   └── .obsidian/                          ← 隠しフォルダ（設定フォルダ）
-       └── plugins/                        ← プラグインフォルダ
-           └── obsidian-plugin-imagepaste/ ← 📌 このフォルダを作成してください
-               ├── main.js                 ← ビルドされたプラグインファイル
-               ├── manifest.json           ← プラグイン設定ファイル
-               └── styles.css              ← スタイルシートファイル
-   ```
+## ファイル名の例
 
-   **フォルダ名は必ず `obsidian-plugin-imagepaste` にしてください！**
+設定:
+- 接頭辞: `${currentFileNameWithoutExt}_`
+- 本体: `image-YYMMDD-HHmmss`
 
-   **📋 実際の例：**
-
-   ```text
-   /Users/yourname/Documents/MyObsidianVault/.obsidian/plugins/obsidian-plugin-imagepaste/
-   ```
-
-4. **ファイルをコピー**:
-
-   このプロジェクトのルートディレクトリにある以下の 3 つのファイルを、
-   上記で作成した `obsidian-plugin-imagepaste` フォルダにコピーします：
-
-   - `main.js` ← **これが最も重要なファイルです**
-   - `manifest.json`
-   - `styles.css`
-
-5. **Obsidian でプラグインを有効化**:
-   - Obsidian を再起動
-   - 設定 → コミュニティプラグイン → インストール済みプラグイン
-   - "Image Paste" を見つけて有効化
-
-### 開発者向けインストール（開発・デバッグ用）
-
-1. **依存関係のインストール**:
-
-   ```bash
-   cd obsidian-plugin-imagepaste
-   npm install
-   ```
-
-2. **ビルド**:
-
-   ```bash
-   npm run build
-   ```
-
-3. **シンボリックリンクの作成** (推奨):
-
-   ```bash
-   # Obsidian Vaultのpluginsディレクトリに移動
-   cd /path/to/your/vault/.obsidian/plugins/
-
-   # シンボリックリンクを作成
-   ln -s /Users/Ryo/Projects/obsidian-plugin-imagepaste obsidian-plugin-imagepaste
-   ```
-
-## 使用方法
-
-1. **基本的な使用**:
-
-   - 画像をクリップボードにコピー
-   - Obsidian のエディタで `Cmd + Alt + V` を押下
-   - 画像が自動的に保存され、ノートに挿入されます
-
-2. **設定のカスタマイズ**:
-   - 設定 → コミュニティプラグイン → Image Paste → ⚙️（設定アイコン）
-   - 以下の項目を設定可能：
-     - **画像保存先フォルダパス**: 画像を保存するフォルダ（例: `${currentFileDir}/images`）
-     - **画像命名接頭辞**: ファイル名の前に付ける文字列
-     - **画像命名ルール**: ファイル名の本体部分（例: `image${timestamp}`）
-     - **画像挿入パターン**: ノートに挿入する Markdown/HTML テンプレート
-     - **サポートする画像形式**: 許可する画像ファイル形式
-
-## 設定例
-
-### 基本設定
-
-```text
-画像保存先フォルダパス: ${currentFileDir}/images
-画像命名接頭辞: ${currentFileNameWithoutExt}_
-画像命名ルール: image${timestamp}
-画像挿入パターン: <img src='./images/${imageFileName}' alt='image' style='width: 600px; border: 1px solid black;'>
-```
-
-### 変数の説明
-
-- `${currentFileDir}`: 現在のファイルのディレクトリ
-- `${currentFileName}`: 現在のファイル名（拡張子含む）
-- `${currentFileNameWithoutExt}`: 現在のファイル名（拡張子なし）
-- `${timestamp}`: タイムスタンプ
-- `${imageFileName}`: 生成される画像ファイル名
-
-## トラブルシューティング
-
-### プラグインが表示されない
-
-- Obsidian を再起動してください
-- `.obsidian/plugins/obsidian-plugin-imagepaste/` フォルダに必要なファイルがすべて存在するか確認してください
-
-### 設定画面に項目が一部しか表示されない
-
-- プラグインを無効化 → 有効化してください
-- 開発者ツール（Cmd + Option + I）でエラーがないか確認してください
-
-### 画像が保存されない
-
-- 保存先フォルダのパスが正しいか確認してください
-- フォルダの書き込み権限があるか確認してください
+結果:
+- `meeting-notes_image-241105-143020.png`
 
 ## 開発
 
-### ビルド
-
 ```bash
+# 依存関係のインストール
+npm install
+
+# 開発モード（ファイル監視）
+npm run dev
+
+# ビルド
 npm run build
 ```
 
-### 開発モード（ファイル監視）
+## インストール
 
-```bash
-npm run dev
-```
+1. リポジトリをクローン
+2. `npm install` で依存関係をインストール
+3. `npm run build` でビルド
+4. プラグインフォルダをObsidianの `.obsidian/plugins/` にコピー
+5. Obsidianでプラグインを有効化
 
 ## ライセンス
 
-MIT License
-
-## 作者
-
-Ryo
+MIT

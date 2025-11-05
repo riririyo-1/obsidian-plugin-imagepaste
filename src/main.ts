@@ -1,49 +1,57 @@
-import { Plugin } from "obsidian";
-import { PasteImageHandler } from "./handler";
-import { DEFAULT_SETTINGS, ImagePasteSettingTab, SettingsHost, sanitizeSettings } from "./settings";
-import { ImagePasteSettings } from "./types";
+import { Plugin, MarkdownView } from "obsidian";
+import { ImagePasteSettings, DEFAULT_SETTINGS, ImagePasteSettingTab } from "./settings";
+import { handleImagePaste } from "./paste-handler";
+import { getFileContext } from "./utils";
 
-export default class ImagePastePlugin extends Plugin implements SettingsHost {
-  settings: ImagePasteSettings = DEFAULT_SETTINGS;
-  private handler: PasteImageHandler | null = null;
 
-  async onload(): Promise<void> {
-    await this.loadSettings();
+// -- プラグインのメインクラス --------------
+export default class ImagePastePlugin extends Plugin {
+	settings: ImagePasteSettings;
 
-    this.handler = new PasteImageHandler(this.app, () => this.settings);
 
-    this.addCommand({
-      id: "paste-image-from-clipboard",
-      name: "クリップボードから画像を貼り付け",
-      hotkeys: [
-        {
-          modifiers: ["Mod", "Alt"],
-          key: "v",
-        },
-      ],
-      editorCallback: () => {
-        this.handler?.handlePaste();
-      },
-    });
+	// -- プラグインのロード --------------
+	async onload() {
+		await this.loadSettings();
 
-    this.addSettingTab(new ImagePasteSettingTab(this.app, this));
-  }
+		// コマンドを追加: Cmd+Option+V (Mac) / Ctrl+Alt+V (Win)
+		this.addCommand({
+			id: "paste-image",
+			name: "Paste image from clipboard",
+			editorCallback: async (editor, view) => {
+				// 現在のファイルのコンテキストを取得
+				const file = view.file;
+				const context = getFileContext(file);
 
-  onunload(): void {
-    this.handler = null;
-  }
+				// 画像貼り付け処理を実行
+				await handleImagePaste(editor, this.app.vault, this.settings, context);
+			},
+			hotkeys: [
+				{
+					modifiers: ["Mod", "Alt"],
+					key: "v",
+				},
+			],
+		});
 
-  async updateSettings(value: Partial<ImagePasteSettings>): Promise<void> {
-    this.settings = sanitizeSettings({ ...this.settings, ...value });
-    await this.saveSettings();
-  }
+		// 設定タブを追加
+		this.addSettingTab(new ImagePasteSettingTab(this.app, this));
+	}
 
-  async loadSettings(): Promise<void> {
-    const data = await this.loadData<ImagePasteSettings>();
-    this.settings = sanitizeSettings({ ...DEFAULT_SETTINGS, ...(data ?? {}) });
-  }
 
-  async saveSettings(): Promise<void> {
-    await this.saveData(this.settings);
-  }
+	// -- プラグインのアンロード --------------
+	onunload() {
+		// 特に処理なし
+	}
+
+
+	// -- 設定を読み込み --------------
+	async loadSettings() {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+
+	// -- 設定を保存 --------------
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
 }

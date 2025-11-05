@@ -1,0 +1,14 @@
+.imagepaste-setting-usage {
+  margin-bottom: 12px;
+}
+
+.imagepaste-setting-error {
+  color: var(--text-error, #cc4d4d);
+  font-size: var(--font-smaller);
+  margin-top: 4px;
+  min-height: 1em;
+}
+
+.imagepaste-setting-error:not(.is-visible) {
+  display: none;
+}

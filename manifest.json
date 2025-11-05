@@ -1,9 +1,10 @@
 {
-  "id": "obsidian-plugin-imagepaste",
+  "id": "imagepaste",
   "name": "Image Paste",
-  "version": "0.1.0",
-  "minAppVersion": "1.5.0",
-  "description": "Cmd + Alt + V でクリップボード画像を保存・挿入する Obsidian プラグイン。",
-  "author": "Ryo",
-  "isDesktopOnly": true
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Paste images from clipboard with Cmd+Option+V (Mac) / Ctrl+Alt+V (Win)",
+  "author": "Your Name",
+  "authorUrl": "",
+  "isDesktopOnly": false
 }
