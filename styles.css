@@ -8,3 +8,69 @@
   color: var(--text-muted);
   font-size: 0.9em;
 }
+
+
+/* 設定画面のレイアウト調整：入力欄を説明の下に配置 */
+.image-paste-settings .setting-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-top: 1px solid var(--background-modifier-border);
+  padding: 20px 0;
+}
+
+.image-paste-settings .setting-item:first-of-type {
+  border-top: none;
+}
+
+.image-paste-settings .setting-item-info {
+  flex-grow: 0;
+  padding-right: 0;
+  margin-bottom: 10px;
+}
+
+.image-paste-settings .setting-item-name {
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.image-paste-settings .setting-item-description {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.image-paste-settings .setting-item-control {
+  flex-grow: 1;
+  width: 100%;
+  justify-content: stretch;
+}
+
+.image-paste-settings .setting-item-control input[type="text"],
+.image-paste-settings .setting-item-control textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.image-paste-settings .example-section {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: var(--background-secondary);
+  border-radius: 6px;
+  border-left: 3px solid var(--interactive-accent);
+}
+
+.image-paste-settings .example-section .example-title {
+  font-weight: 600;
+  color: var(--text-normal);
+  margin-bottom: 8px;
+}
+
+.image-paste-settings .example-section .example-content {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  line-height: 1.6;
+}
