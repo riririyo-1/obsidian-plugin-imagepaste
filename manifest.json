@@ -1,10 +1,10 @@
 {
-  "id": "imagepaste",
+  "id": "image-paste",
   "name": "Image Paste",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
   "description": "Paste images from clipboard with Cmd+Option+V (Mac) / Ctrl+Alt+V (Win)",
-  "author": "Your Name",
-  "authorUrl": "",
+  "author": "riyo",
+  "authorUrl": "https://github.com/riririyo-1",
   "isDesktopOnly": false
 }
